@@ -7,9 +7,10 @@ on:
     pull_request:
       # The events are that a PR is opened, or when a commit is pushed
       # to a branch that has an existing pull request
-      types: [opened, synchronize]
+      types: [ closed ]
       # allows to specify that this workflow should only run if branch is "develop".
-      branches: [ develop ]
+      branches:
+        - Develop
       # To trigger for changes to the force-app directory
       paths:
         - 'force-app/**'
