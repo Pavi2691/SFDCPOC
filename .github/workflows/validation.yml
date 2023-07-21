@@ -7,9 +7,10 @@ on:
     pull_request:
       # The events are that a PR is opened, or when a commit is pushed
       # to a branch that has an existing pull request
-      types: [opened, synchronize]
+      types: [ closed ]
       # allows to specify that this workflow should only run if branch is "develop".
-      branches: [ develop ]
+      branches:
+        - Develop
       # To trigger for changes to the force-app directory
       paths:
         - 'force-app/**'
@@ -54,21 +55,6 @@ jobs:
               run: |
                 sudo apt-get update
                 sudo apt install default-jdk
-
-            # Install SFDX scanner
-            - name: 'Installing SFDX scanner'
-              run: sfdx plugins:install @salesforce/sfdx-scanner
-
-            # Prior to setting up this workflow, you have to create a Github Secret
-            # that contains the sfdx url of the integration/qa org.
-
-            # The steps to generate the url are here 
-            # https://developer.salesforce.com/docs/atlas.en-us.sfdx_cli_reference.meta/sfdx_cli_reference/cli_reference_auth_sfdxurl.htm
-
-            # This URL can then be used with the sfdx auth:sfdxurl:store to authenticate
-            # the sfdx project in the repositry, against the org from which the URL
-            # was generated from. This works just like that, there's no need to create
-            # connected apps or any else. 
 
             # The URL is stored in the Github Secret named SFDX_INTEGRATION_URL
             # so here we store the URL into a text file
