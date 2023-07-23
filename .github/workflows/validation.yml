@@ -55,11 +55,21 @@ jobs:
             - name: 'Authenticate to Integration Org'
               run: sfdx auth:sfdxurl:store -f ./SFDX_INTEGRATION_URL.txt -s
 
+            # Fetch the commit Id of the last successful deployment from the custom settings
+            - name: 'Fetch the commit id'
+              run: |
+                  sfdx force:apex:execute -f Customsett.apex > fetchCommit.txt
+                  value=`grep -i 'commitId__c=' fetchCommit.txt | awk '{print $NF}'`
+                  str=${value#*=}
+                  GitCommitID=${str%?}
+                  echo $GitCommitID > GitCommitID.txt
+
             # We use SFDX Git Delta to create a directory with only the metadata that has changed.
             - name: 'Create delta packages for new, modified or deleted metadata'
               run: | 
                   mkdir changed-sources
-                  sfdx sgd:source:delta --to "HEAD" --from "HEAD^" --output changed-sources/ --generate-delta --source force-app/ 
+                  sfdx sgd:source:delta --to "HEAD" --from \"${GitCommitID}\" --output changed-sources/ --generate-delta --source force-app/
+                  cat changed-sources/package/package.xml
 
             # Specify the testlevel to run the apex test classes
 
@@ -69,3 +79,13 @@ jobs:
             # Deploy the changes
             - name: 'Deploy the entire branch to Integration org'
               run: sfdx force:source:deploy -p "changed-sources/force-app" --testlevel RunLocalTests --json
+
+            # Update the commit id in the custom settings for successful deployment
+            - name: 'Update Commit Id'
+              run: |
+                  commitid=`git log | head -n 1 | cut -d " " -f 2`
+                  echo $commitid
+                  sed -e "s/GitCommitID/$commitid/g" updateCustomsett.apex > newupdateCustomsett.apex
+                  cat updateCustomsett.apex
+                  cat newupdateCustomsett.apex
+                  sfdx force:apex:execute -f newupdateCustomsett.apex
