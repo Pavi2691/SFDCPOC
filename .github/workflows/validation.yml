@@ -64,8 +64,9 @@ jobs:
                   str=${value#*=}
                   GitCommitID=${str%?}
                   echo $GitCommitID
+                  cd ..
                   mkdir changed-sources
-                  sfdx sgd:source:delta --to "HEAD" --from \"${GitCommitID}\" --output changed-sources/ --generate-delta --source force-app/
+                  sfdx sgd:source:delta --to "HEAD" --from "${GitCommitID}" --output changed-sources/ --generate-delta --source force-app/
                   cat changed-sources/package/package.xml
 
             # Specify the testlevel to run the apex test classes
