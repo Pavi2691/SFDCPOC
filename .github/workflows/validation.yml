@@ -41,9 +41,7 @@ jobs:
 
             # Install java 
             - name: 'Installing java'
-              run: |
-                sudo apt-get update
-                sudo apt install default-jdk
+              run: java -version
 
             # The URL is stored in the Github Secret named SFDX_INTEGRATION_URL is copied to text file
             - name: 'Populate auth file with SFDX_URL secret of integration org'
@@ -55,8 +53,8 @@ jobs:
             - name: 'Authenticate to Integration Org'
               run: sfdx auth:sfdxurl:store -f ./SFDX_INTEGRATION_URL.txt -s
 
-            # Fetch the commit Id of the last successful deployment from the custom settings
-            - name: 'Fetch the commit id'
+            # Fetch the commit Id of the last successful deployment from the custom settings and create the differential package.xml
+            - name: 'Create the differential package.xml'
               run: |
                   cd test
                   sfdx force:apex:execute -f Customsett.apex > fetchCommit.txt
