@@ -58,7 +58,7 @@ jobs:
             # Fetch the commit Id of the last successful deployment from the custom settings
             - name: 'Fetch the commit id'
               run: |
-                  sfdx force:apex:execute -f Customsett.apex > fetchCommit.txt
+                  sfdx force:apex:execute -f "test/Customsett.apex" > fetchCommit.txt
                   value=`grep -i 'commitId__c=' fetchCommit.txt | awk '{print $NF}'`
                   str=${value#*=}
                   GitCommitID=${str%?}
@@ -85,6 +85,7 @@ jobs:
               run: |
                   commitid=`git log | head -n 1 | cut -d " " -f 2`
                   echo $commitid
+                  cd test
                   sed -e "s/GitCommitID/$commitid/g" updateCustomsett.apex > newupdateCustomsett.apex
                   cat updateCustomsett.apex
                   cat newupdateCustomsett.apex
