@@ -63,11 +63,7 @@ jobs:
                   value=`grep -i 'commitId__c=' fetchCommit.txt | awk '{print $NF}'`
                   str=${value#*=}
                   GitCommitID=${str%?}
-                  echo $GitCommitID > GitCommitID.txt
-
-            # We use SFDX Git Delta to create a directory with only the metadata that has changed.
-            - name: 'Create delta packages for new, modified or deleted metadata'
-              run: | 
+                  echo $GitCommitID
                   mkdir changed-sources
                   sfdx sgd:source:delta --to "HEAD" --from \"${GitCommitID}\" --output changed-sources/ --generate-delta --source force-app/
                   cat changed-sources/package/package.xml
