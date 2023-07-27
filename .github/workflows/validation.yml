@@ -40,7 +40,7 @@ jobs:
                   sfdx plugins 
 
             # Install java 
-            - name: 'Installing java'
+            - name: 'Check java version'
               run: java -version
 
             # The URL is stored in the Github Secret named SFDX_INTEGRATION_URL is copied to text file
@@ -69,11 +69,16 @@ jobs:
 
             # Specify the testlevel to run the apex test classes
 
-            - name: 'Check-only deploy delta changes'
+            - name: 'Validate delta changes'
               run: sfdx force:source:deploy -p "changed-sources/force-app" --checkonly --ignorewarnings
 
+            # Run the Static Code analyzer
+
+            - name: 'Run PMD scan'
+              run: echo "This stage is to run the PMD scan and fail the build based on analysis"
+
             # Deploy the changes
-            - name: 'Deploy the entire branch to Integration org'
+            - name: 'Deploy the delta changes'
               run: sfdx force:source:deploy -p "changed-sources/force-app" --testlevel RunLocalTests --json
 
             # Update the commit id in the custom settings for successful deployment
