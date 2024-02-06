@@ -72,7 +72,9 @@ jobs:
             - name: 'Validate delta changes'
               run: |
                   sfdx force:source:deploy -p "changed-sources/force-app" --testlevel RunLocalTests --checkonly --ignorewarnings --verbose > DeploymentID.txt
-                   cat DeploymentID.txt
+                  cat DeploymentID.txt
+                  depID=`grep -i 'Deploy ID: ' DeploymentID.txt | awk '{print $NF}'`
+                  echo $depID
 
             # Run the Static Code analyzer
 
