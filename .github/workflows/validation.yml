@@ -76,7 +76,6 @@ jobs:
                   depID=`grep -i 'Deploy ID: ' DeploymentID.txt | awk '{print $NF}'`
                   echo $depID
 
-
             # Run the Static Code analyzer
 
             - name: 'Run PMD scan'
