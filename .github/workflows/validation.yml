@@ -69,12 +69,14 @@ jobs:
 
             # Specify the testlevel to run the apex test classes
 
-            - name: 'Validate delta changes'
+            - id: validate
+              name: 'Validate delta changes'
               run: |
                   sfdx force:source:deploy -p "changed-sources/force-app" --testlevel RunLocalTests --checkonly --ignorewarnings --verbose > DeploymentID.txt
                   cat DeploymentID.txt
                   depID=`grep -i 'Deploy ID: ' DeploymentID.txt | awk '{print $NF}'`
                   echo $depID 
+                  echo "DeploymentID=$depID" >> "$GITHUB_OUTPUT"
 
             # Run the Static Code analyzer
 
@@ -83,7 +85,7 @@ jobs:
 
             # Deploy the changes
             - name: 'Deploy the delta changes'
-              run: sfdx force:source:deploy -q '$depID' -w -1
+              run: sfdx force:source:deploy -q ${{ steps.validate.outputs.DeploymentID }} -w -1
 
             # Update the commit id in the custom settings for successful deployment
             - name: 'Update Commit Id'
