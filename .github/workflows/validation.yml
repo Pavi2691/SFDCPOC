@@ -70,7 +70,8 @@ jobs:
             # Specify the testlevel to run the apex test classes
 
             - name: 'Validate delta changes'
-              run: sfdx force:source:deploy -p "changed-sources/force-app" --testlevel RunLocalTests --checkonly --ignorewarnings --verbose
+              run: sfdx force:source:deploy -p "changed-sources/force-app" --testlevel RunLocalTests --checkonly --ignorewarnings --verbose > DeploymentID.txt
+                   cat DeploymentID.txt
 
             # Run the Static Code analyzer
 
