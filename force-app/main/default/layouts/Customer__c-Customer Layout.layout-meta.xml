@@ -12,7 +12,11 @@
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
-                <field>Address</field>
+                <field>Address__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>LastName__c</field>
             </layoutItems>
         </layoutColumns>
         <layoutColumns>
