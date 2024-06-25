@@ -11,7 +11,7 @@
                 <field>Name</field>
             </layoutItems>
             <layoutItems>
-                <behavior>ReadOnly</behavior>
+                <behavior>Edit</behavior>
                 <field>Address</field>
             </layoutItems>
         </layoutColumns>
