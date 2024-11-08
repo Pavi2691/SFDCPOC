@@ -16,7 +16,7 @@
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
-                <field>LastName__c</field>
+                <field>FirstName__c</field>
             </layoutItems>
         </layoutColumns>
         <layoutColumns>
