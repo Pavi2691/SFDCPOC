@@ -83,6 +83,7 @@ jobs:
               run: |
                   echo "test run"
                   test_run = $(sf apex run test --test-level RunLocalTests --target-org ${{ secrets.SFDX_INTEGRATION_URL}} --wait 60 --json --result-format human)
+                  wait 60
                   echo " Test run: $test_run"
 
             # Run the Static Code analyzer
