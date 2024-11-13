@@ -82,7 +82,9 @@ jobs:
             - name: 'Run test class'
               run: |
                   echo "test run"
-                  test_run = ${sf apex run test --test-level RunLocalTests --wait 60 --json --result-format human}
+                  sf apex run test --test-level RunLocalTests --wait 60 --json --result-format human > log.txt
+                  cat log.txt
+                  test_run=$(cat log.txt)
                   echo " Test run: $test_run"
 
             # Run the Static Code analyzer
